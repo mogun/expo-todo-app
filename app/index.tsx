@@ -1,13 +1,12 @@
 import { useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
-  TextInput,
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import Button from "@/components/Button";
+import { Button, Form, Input, SizableText } from "tamagui";
+import { H1 } from "tamagui";
 
 interface Todo {
   id: string;
@@ -33,9 +32,9 @@ export default function Index() {
     console.log(todo);
     return (
       <View style={styles.todoItem}>
-        <Text style={styles.todoText}>{item.thing}</Text>
+        <SizableText>{item.thing}</SizableText>
         <TouchableOpacity onPress={() => deleteTodo(item.id)}>
-          <Text style={styles.deleteButton}>delete</Text>
+          <SizableText>delete</SizableText>
         </TouchableOpacity>
       </View>
     );
@@ -43,15 +42,18 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text>ToDo</Text>
-      <TextInput
-        style={styles.textInput}
-        multiline={false}
-        placeholder="やることを入力してください"
-        value={todo}
-        onChangeText={setTodo}
-      />
-      <Button label="追加" onPress={addTodo} />
+      <H1>ToDo</H1>
+      <Form onSubmit={addTodo}>
+        <Input
+          flex={1}
+          placeholder="やることを入力してください"
+          value={todo}
+          onChangeText={setTodo}
+        />
+        <Form.Trigger asChild>
+          <Button>追加</Button>
+        </Form.Trigger>
+      </Form>
       <FlatList
         data={todoList}
         keyExtractor={(item) => item.id}
@@ -64,17 +66,8 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
   },
-  textInput: {
-    width: "80%",
-    borderWidth: 1,
-    margin: 10,
-    padding: 10,
-  },
   todoItem: {},
-  todoText: {},
-  deleteButton: {},
 });
