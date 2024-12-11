@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { FlatList, TouchableOpacity } from "react-native";
+import { Trash2 } from "@tamagui/lucide-icons";
 import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { Button, Form, Input, SizableText } from "tamagui";
+  Button,
+  Form,
+  Input,
+  SizableText,
+  XStack,
+  YStack,
+  Separator,
+} from "tamagui";
 import { H1 } from "tamagui";
 
 interface Todo {
@@ -29,45 +33,41 @@ export default function Index() {
   };
 
   const renderTodo = ({ item }: { item: Todo }) => {
-    console.log(todo);
     return (
-      <View style={styles.todoItem}>
-        <SizableText>{item.thing}</SizableText>
-        <TouchableOpacity onPress={() => deleteTodo(item.id)}>
-          <SizableText>delete</SizableText>
-        </TouchableOpacity>
-      </View>
+      <YStack marginTop={10}>
+        <XStack paddingHorizontal={10} alignItems="center" gap="$2">
+          <SizableText flex={1}>{item.thing}</SizableText>
+          <TouchableOpacity onPress={() => deleteTodo(item.id)}>
+            <Button size="$2" icon={Trash2} />
+          </TouchableOpacity>
+        </XStack>
+        <Separator paddingVertical={5} />
+      </YStack>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <H1>ToDo</H1>
+    <YStack flex={1} flexWrap="wrap" marginHorizontal={10}>
+      <H1 margin={10} alignItems="center">ToDo</H1>
       <Form onSubmit={addTodo}>
-        <Input
-          flex={1}
-          placeholder="やることを入力してください"
-          value={todo}
-          onChangeText={setTodo}
-        />
-        <Form.Trigger asChild>
-          <Button>追加</Button>
-        </Form.Trigger>
+        <XStack>
+          <Input
+            flex={1}
+            placeholder="やることを入力してください"
+            value={todo}
+            onChangeText={setTodo}
+            marginRight={5}
+          />
+          <Form.Trigger asChild>
+            <Button>追加</Button>
+          </Form.Trigger>
+        </XStack>
       </Form>
       <FlatList
         data={todoList}
         keyExtractor={(item) => item.id}
         renderItem={renderTodo}
       />
-    </View>
+    </YStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  todoItem: {},
-});
